@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ t.title }}</title>
+<meta name="description" content="{{ t.description }}">
+<meta property="og:title" content="{{ t.title }}">
+<meta property="og:description" content="{{ t.description }}">
+<meta property="og:image" content="{{ url_for('static', filename='img/hero.jpg', _external=True) }}">
+{% for l in langs %}<link rel="alternate" hreflang="{{ l }}" href="{{ url_for('index', lang=l, _external=True) }}">
+{% endfor %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="#top">Leader<b>X</b></a><div style="display:flex;align-items:center"><a class="l" href="#about">{{ t.nav_about }}</a><a class="l" href="#values">{{ t.nav_values }}</a><a class="l" href="#merch">{{ t.nav_merch }}</a><a class="l" href="{{ url_for('kpi', lang=lang) }}">KPI</a><a class="btn" style="padding:9px 18px;font-size:14px;margin-left:16px" href="#join">{{ t.nav_apply }}</a><div class="lang" role="group" aria-label="Language"><a href="{{ url_for('index', lang='kk') }}" hreflang="kk"{% if lang == 'kk' %} class="on"{% endif %}>KZ</a><a href="{{ url_for('index', lang='ru') }}" hreflang="ru"{% if lang == 'ru' %} class="on"{% endif %}>RU</a><a href="{{ url_for('index', lang='en') }}" hreflang="en"{% if lang == 'en' %} class="on"{% endif %}>EN</a></div></div></div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+<div><div class="tag">LeaderX Community · leaderx.kz</div>
+<h1>Kósbasshy bul.<br><span class="gold">Alǵa.</span></h1>
+<p>{{ t.hero_text }}</p>
+<div class="cta"><a class="btn" href="#join">{{ t.hero_btn }}</a><a class="btn o" href="#about">{{ t.hero_more }}</a></div></div>
+<img src="{{ url_for('static', filename='img/hero.jpg') }}" alt="{{ t.alt_hero }}"></div></header>
+
+<section id="about"><div class="wrap split">
+<img src="{{ url_for('static', filename='img/shield.jpg') }}" alt="{{ t.alt_shield }}">
+<div><div class="tag d">{{ t.about_tag }}</div>
+<h2 style="margin:8px 0 14px">{{ t.about_h2a }}<span class="gold">{{ t.about_h2b }}</span></h2>
+<p style="color:var(--mute)">{{ t.about_p }}</p>
+<ul class="list"><li><span>01</span>{{ t.about_li1 }}</li><li><span>02</span>{{ t.about_li2 }}</li><li><span>03</span>{{ t.about_li3 }}</li></ul></div></div></section>
+
+<section id="values" class="dark"><div class="wrap">
+<div class="head"><div class="tag">{{ t.values_tag }}</div><h2>{{ t.values_h2 }}</h2><p>{{ t.values_p }}</p></div>
+<div class="grid">
+<div class="card"><div class="k">JAUAPKERSHILIK</div><h3>{{ t.v1_title }}</h3><p>{{ t.v1_text }}</p></div>
+<div class="card"><div class="k">BASTAMA</div><h3>{{ t.v2_title }}</h3><p>{{ t.v2_text }}</p></div>
+<div class="card"><div class="k">SENIM</div><h3>{{ t.v3_title }}</h3><p>{{ t.v3_text }}</p></div>
+<div class="card"><div class="k">MÁQSAT</div><h3>{{ t.v4_title }}</h3><p>{{ t.v4_text }}</p></div>
+<div class="card"><div class="k">JETISTIK</div><h3>{{ t.v5_title }}</h3><p>{{ t.v5_text }}</p></div>
+</div></div></section>
+
+<section><div class="wrap">
+<div class="head"><div class="tag d">{{ t.prog_tag }}</div><h2>{{ t.prog_h2 }}</h2></div>
+<div class="grid">
+<div class="card"><h3>{{ t.p1_title }}</h3><p>{{ t.p1_text }}</p></div>
+<div class="card"><h3>{{ t.p2_title }}</h3><p>{{ t.p2_text }}</p></div>
+<div class="card"><h3>{{ t.p3_title }}</h3><p>{{ t.p3_text }}</p></div>
+<div class="card"><h3>{{ t.p4_title }}</h3><p>{{ t.p4_text }}</p></div>
+</div></div></section>
+
+<section id="merch" class="dark"><div class="wrap">
+<div class="head"><div class="tag">LeaderX Merch</div><h2>{{ t.merch_h2 }}</h2><p>{{ t.merch_p }}</p></div>
+<div class="gal"><img src="{{ url_for('static', filename='img/merch1.jpg') }}" alt="{{ t.alt_merch1 }}"><img src="{{ url_for('static', filename='img/merch2.jpg') }}" alt="{{ t.alt_merch2 }}"><img src="{{ url_for('static', filename='img/stick1.jpg') }}" alt="{{ t.alt_stick1 }}"></div>
+</div></section>
+
+<section><div class="wrap split">
+<div><div class="tag d">{{ t.stick_tag }}</div>
+<h2 style="margin:8px 0 14px">{{ t.stick_h2a }}<span class="gold">{{ t.stick_h2b }}</span></h2>
+<p style="color:var(--mute)">{{ t.stick_p }}</p></div>
+<img src="{{ url_for('static', filename='img/stick2.jpg') }}" alt="{{ t.alt_stick2 }}"></div></section>
+
+<section class="join" id="join"><div class="wrap">
+<div class="tag">{{ t.join_tag }}</div>
+<h2 style="font-size:clamp(30px,5vw,48px);margin:10px 0 0">{{ t.join_h2a }}<span class="gold">{{ t.join_h2b }}</span>{{ t.join_h2c }}</h2>
+<p>{{ t.join_p }}</p>
+<div class="grid" style="max-width:720px;margin:0 auto 32px">
+<div class="card" style="background:#132447;border-color:#25375f"><div class="k">01</div><h3>{{ t.step1 }}</h3></div>
+<div class="card" style="background:#132447;border-color:#25375f"><div class="k">02</div><h3>{{ t.step2 }}</h3></div>
+<div class="card" style="background:#132447;border-color:#25375f"><div class="k">03</div><h3>{{ t.step3 }}</h3></div>
+</div>
+<a class="btn" target="_blank" rel="noopener" href="{{ form_url }}">{{ t.join_btn }}</a>
+<p style="margin:22px auto 0;color:var(--gold2);font-weight:700">{{ t.join_note }}</p>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 LeaderX · leaderx.kz</span><span><a href="{{ url_for('kpi', lang=lang) }}" style="color:inherit;margin-right:16px">KPI</a>Kósbasshy bul.</span></div></footer>
+</body>
+</html>
