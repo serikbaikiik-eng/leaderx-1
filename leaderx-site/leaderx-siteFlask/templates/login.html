@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin login</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f1117; color: #eee;
+           display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    form { background: #1a1d27; padding: 32px; border-radius: 12px; width: 320px; display: flex; flex-direction: column; gap: 12px; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    input { padding: 10px; border-radius: 8px; border: 1px solid #333; background: #0f1117; color: #eee; font-size: 15px; }
+    button { padding: 10px; border: 0; border-radius: 8px; background: #6c5ce7; color: #fff; font-size: 15px; cursor: pointer; }
+    .error { color: #ff6b6b; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <form method="post">
+    <h1>Admin</h1>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <input type="text" name="username" placeholder="Login" required autofocus>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit">Кіру</button>
+  </form>
+</body>
+</html>
