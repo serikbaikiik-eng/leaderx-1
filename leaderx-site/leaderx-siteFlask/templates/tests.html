@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" class="nojs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{ ui.title }}</title>
+<meta name="description" content="{{ ui.lead }}">
+{% for l in langs %}<link rel="alternate" hreflang="{{ l }}" href="{{ url_for('tests', lang=l, _external=True) }}">
+{% endfor %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang=lang) }}">Leader<b>X</b></a><div style="display:flex;align-items:center"><div class="links" id="menu"><a class="l" href="{{ url_for('index', lang=lang) }}">{{ ui.back }}</a><a class="l" href="{{ url_for('kpi', lang=lang) }}">KPI</a></div><a class="btn" style="padding:9px 18px;font-size:14px;margin-left:16px" target="_blank" rel="noopener" href="{{ form_url }}">{{ ui.apply }}</a><div class="lang" role="group" aria-label="Language"><a href="{{ url_for('tests', lang='kk') }}" hreflang="kk"{% if lang == 'kk' %} class="on"{% endif %}>KZ</a><a href="{{ url_for('tests', lang='ru') }}" hreflang="ru"{% if lang == 'ru' %} class="on"{% endif %}>RU</a><a href="{{ url_for('tests', lang='en') }}" hreflang="en"{% if lang == 'en' %} class="on"{% endif %}>EN</a></div><button type="button" class="burger" aria-label="Menu" aria-controls="menu" aria-expanded="false"><span></span></button></div></div></nav>
+
+<header class="sub"><div class="wrap"><h1>{{ ui.h1 }}</h1><p>{{ ui.lead }}</p></div></header>
+
+<main><div class="wrap kpi-page">
+<div class="tabs" role="tablist">
+{% for b in blocks %}<button type="button" role="tab" id="tab-{{ b.id }}" aria-controls="p-{{ b.id }}" aria-selected="{{ 'true' if loop.first else 'false' }}" data-id="{{ b.id }}">{{ ui.blocks[b.id][0] }}</button>
+{% endfor %}
+</div>
+
+{% for b in blocks %}
+<section class="panel{% if loop.first %} on{% endif %}" id="p-{{ b.id }}" role="tabpanel" aria-labelledby="tab-{{ b.id }}">
+<p>{{ ui.blocks[b.id][1] }}</p>
+<div class="grid">
+{% for it in b["items"] %}
+<div class="card tcard"><div><div class="k">{{ '%02d' % loop.index }}</div><h3>{{ it.names[lang] if it.names else it.name }}</h3></div>
+{% if it.route %}<a class="btn" href="{{ url_for(it.route, lang=lang) }}">{{ ui.start }} →</a>
+{% elif it.url %}<a class="btn" target="_blank" rel="noopener" href="{{ it.url }}">{{ ui.open }} →</a>
+{% elif it.file %}<a class="btn o" download href="{{ url_for('static', filename='docs/' ~ it.file) }}">{{ ui.download }}</a>
+{% else %}<span class="soon">{{ ui.soon }}</span>{% endif %}
+</div>
+{% endfor %}
+</div>
+</section>
+{% endfor %}
+</div></main>
+
+<footer><div class="wrap"><span>© 2026 LeaderX · leaderx.kz</span><a href="{{ url_for('index', lang=lang) }}" style="color:inherit">{{ ui.back }}</a></div></footer>
+<script>
+(function(){
+  document.documentElement.classList.remove('nojs');
+  var tabs=[].slice.call(document.querySelectorAll('.tabs button'));
+  function show(id){
+    tabs.forEach(function(t){t.setAttribute('aria-selected',String(t.dataset.id===id))});
+    [].forEach.call(document.querySelectorAll('.panel'),function(p){p.classList.toggle('on',p.id==='p-'+id)});
+  }
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.id);history.replaceState(null,'','#'+t.dataset.id)})});
+  var h=location.hash.slice(1);
+  if(tabs.some(function(t){return t.dataset.id===h})) show(h);
+})();
+</script>
+<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
+</body>
+</html>

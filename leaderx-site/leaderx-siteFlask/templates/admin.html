@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — LeaderX</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_results') }}">Нәтижелер</a><a class="l" style="display:inline" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline;margin-left:16px"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<header class="sub"><div class="wrap"><h1>Келушілер</h1><p>Келушілердің толық мәліметі: IP, ел/қала, құрылғы, қайдан келгені. Уақыт: UTC+{{ tz }}. Деректер {{ s.keep }} күн сақталады.</p></div></header>
+<main><div class="wrap kpi-page">
+
+<div class="grid" style="margin-bottom:22px">
+<div class="card"><div class="k">БҮГІН</div><h3>{{ s.today }}</h3><p>көру · {{ s.unique_today }} бірегей келуші</p></div>
+<div class="card"><div class="k">БАРЛЫҒЫ</div><h3>{{ s.total }}</h3><p>көру · {{ s.unique_total }} бірегей келуші</p></div>
+</div>
+
+<div class="card" style="margin-bottom:22px"><div class="k">СОҢҒЫ {{ s.period_days }} КҮН</div>
+<div class="adm-chart">{% for d in s.series %}<div class="adm-col" title="{{ d.day }}: {{ d.views }} көру, {{ d.uniq }} бірегей"><b>{{ d.views }}</b><i style="height:{{ d.h }}%"></i><span>{{ d.day }}</span></div>{% endfor %}</div></div>
+
+<div class="grid" style="margin-bottom:22px">
+{% macro top(title, rows) %}<div class="card"><div class="k">{{ title }}</div>
+<table class="kpi"><tbody>{% for n, c in rows %}<tr><td>{{ n }}</td><td>{{ c }}</td></tr>{% else %}<tr><td colspan="2">—</td></tr>{% endfor %}</tbody></table></div>{% endmacro %}
+{{ top('БЕТТЕР', s.pages) }}{{ top('ТІЛ', s.langs) }}{{ top('ҚҰРЫЛҒЫ', s.devices) }}{{ top('БРАУЗЕР', s.browsers) }}{{ top('ЖҮЙЕ', s.oses) }}{{ top('ЕЛ', s.countries) }}{{ top('ҚАЛА', s.cities) }}{{ top('ҚАЙДАН КЕЛДІ', s.referrers) }}
+</div>
+
+<div class="card"><div class="k">СОҢҒЫ 100 КЕЛУ</div>
+<div class="kpi-wrap"><table class="kpi"><thead><tr><th>Уақыт</th><th>Бет</th><th>Құрылғы</th><th>IP</th><th>Орны</th><th>Қайдан келді</th></tr></thead>
+<tbody>{% for r in s.recent %}<tr><td>{{ r.time }}</td><td>{{ r.path }}</td><td>{{ r.device }} · {{ r.browser }} · {{ r.os }}</td><td>{{ r.ip or r.ip_mask }}</td><td>{{ ((r.city ~ ', ') if r.city else '') ~ (r.country or '—') }}</td><td style="word-break:break-all">{% if r.ref_url %}<a href="{{ r.ref_url }}" target="_blank" rel="noopener noreferrer nofollow" style="color:inherit">{{ r.ref_url }}</a>{% else %}{{ r.referrer or '—' }}{% endif %}</td></tr>{% else %}<tr><td colspan="6">Әзірге келу жоқ</td></tr>{% endfor %}</tbody></table></div></div>
+</div></main>
+<footer><div class="wrap"><span>© 2026 LeaderX · admin</span></div></footer>
+</body>
+</html>
