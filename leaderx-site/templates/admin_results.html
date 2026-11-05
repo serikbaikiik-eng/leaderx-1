@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Нәтижелер — LeaderX Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+<style>
+[hidden]{display:none !important}
+.lx-filter{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.lx-f{display:block;margin:0}
+.lx-f label{display:block;margin:0 0 6px;font-size:12px;font-weight:600;opacity:.85}
+.lx-f select,.lx-f input{display:block;box-sizing:border-box !important;height:42px !important;min-height:0 !important;max-height:42px !important;width:auto !important;min-width:160px;margin:0 !important;padding:0 12px !important;border-radius:10px;border:1px solid #25375f;background:#0a1428;color:#fff;font:inherit;font-size:15px;line-height:40px;aspect-ratio:auto !important}
+.lx-b{display:inline-block;box-sizing:border-box;height:42px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#e8cf8a,#c9a54b);color:#0a1428;font:inherit;font-size:14px;font-weight:700;line-height:42px;cursor:pointer;text-decoration:none}
+.lx-b.o{background:transparent;border:1px solid #c9a54b;color:inherit;line-height:40px}
+.lx-del{background:none;border:0;color:#ffb4bd;cursor:pointer;font:inherit;font-size:13px;padding:0}
+.lx-score{white-space:nowrap}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<header class="sub"><div class="wrap"><h1>Тест нәтижелері</h1><p>Тест тапсырғандардың аты-жөні, тобы және нәтижесі. Уақыт: UTC+{{ tz }}. Бұл жеке деректер: басқаларға таратпаңыз.</p></div></header>
+<main><div class="wrap kpi-page">
+
+<div class="card" style="margin-bottom:22px"><div class="k">СҮЗГІ</div>
+<form method="get" action="{{ url_for('admin_results') }}" class="lx-filter" style="margin-top:12px">
+<div class="lx-f"><label for="ft">Тест</label><select id="ft" name="test"><option value="">Барлығы</option>{% for k, v in tests.items() %}<option value="{{ k }}"{% if f.test == k %} selected{% endif %}>{{ v }}</option>{% endfor %}</select></div>
+<div class="lx-f"><label for="fg">Топ</label><select id="fg" name="grp"><option value="">Барлығы</option>{% for g in groups %}<option value="{{ g }}"{% if f.grp == g %} selected{% endif %}>{{ g }}</option>{% endfor %}</select></div>
+<div class="lx-f"><label for="fq">Аты-жөні / байланыс</label><input id="fq" name="q" type="text" value="{{ f.q }}" maxlength="60"></div>
+<button type="submit" class="lx-b">Көрсету</button>
+<a class="lx-b o" href="{{ url_for('admin_results') }}">Тазалау</a>
+<a class="lx-b o" href="{{ url_for('admin_results_csv', test=f.test, grp=f.grp, q=f.q) }}">Excel-ге жүктеу (CSV)</a>
+</form></div>
+
+<div class="grid" style="margin-bottom:22px">
+<div class="card"><div class="k">ТАБЫЛДЫ</div><h3>{{ rows|length }}</h3><p>нәтиже{% if rows|length >= 1000 %} (соңғы 1000){% endif %}</p></div>
+<div class="card"><div class="k">ТОП БОЙЫНША ОРТАША</div>
+<table class="kpi"><tbody>{% for g, c, avg in summary %}<tr><td>{{ g }} · {{ c }} адам</td><td>{{ avg }}%</td></tr>{% else %}<tr><td colspan="2">—</td></tr>{% endfor %}</tbody></table></div>
+</div>
+
+<div class="card"><div class="k">НӘТИЖЕЛЕР</div>
+<div class="kpi-wrap"><table class="kpi"><thead><tr><th>Уақыт</th><th>Аты-жөні</th><th>Топ</th><th>Байланыс</th><th>Жалпы</th>{% for s in scales %}<th>{{ s }}</th>{% endfor %}<th></th></tr></thead>
+<tbody>{% for r in rows %}<tr><td class="lx-score">{{ r.time }}</td><td>{{ r.name }}</td><td>{{ r.grp }}</td><td style="word-break:break-all">{{ r.contact or '—' }}</td><td class="lx-score"><b>{{ r.total }}%</b></td>{% for v in r.scores %}<td class="lx-score">{{ v }}%</td>{% endfor %}
+<td><form method="post" action="{{ url_for('admin_results_delete') }}" onsubmit="return confirm('Бұл нәтижені өшіру керек пе?')"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="id" value="{{ r.id }}"><input type="hidden" name="back" value="{{ back }}"><button type="submit" class="lx-del">Өшіру</button></form></td></tr>
+{% else %}<tr><td colspan="{{ 6 + scales|length }}">Әзірге нәтиже жоқ</td></tr>{% endfor %}</tbody></table></div></div>
+</div></main>
+<footer><div class="wrap"><span>© 2026 LeaderX · admin</span></div></footer>
+</body>
+</html>

@@ -2,6 +2,9 @@
 
 TRANSLATIONS = {
     "kk": {
+        "hero_h1a": "Kósbasshylyk.",
+        "hero_h1b": "Nátije.",
+        "hero_h1c": "Ózgeris.",
         "nav_about": "Біз туралы",
         "nav_values": "Құндылықтар",
         "nav_merch": "Мерч",
@@ -61,10 +64,13 @@ TRANSLATIONS = {
         "alt_stick2": "LeaderX ұрандары бар стикерлер",
         "alt_hero": "LeaderX логотипі — қою көк фондағы алтын X",
         "alt_shield": "LeaderX қалқан-эмблемасы",
-        "title": "LeaderX — Kósbasshy bul",
+        "title": "LeaderX — Kósbasshylyk. Nátije. Ózgeris.",
         "description": "Қазақстандағы жас көшбасшылар қауымдастығы. ЛидерХ командасына іріктеу басталды."
     },
     "ru": {
+        "hero_h1a": "Лидерство.",
+        "hero_h1b": "Результат.",
+        "hero_h1c": "Перемены.",
         "nav_about": "О нас",
         "nav_values": "Ценности",
         "nav_merch": "Мерч",
@@ -124,10 +130,13 @@ TRANSLATIONS = {
         "alt_stick2": "Стикеры со слоганами LeaderX",
         "alt_hero": "Логотип LeaderX — золотая X на тёмно-синем фоне",
         "alt_shield": "Эмблема LeaderX в виде щита",
-        "title": "LeaderX — Kósbasshy bul",
+        "title": "LeaderX — Лидерство. Результат. Перемены.",
         "description": "Сообщество молодых лидеров Казахстана. Открыт набор в команду LeaderX."
     },
     "en": {
+        "hero_h1a": "Leadership.",
+        "hero_h1b": "Results.",
+        "hero_h1c": "Change.",
         "nav_about": "About",
         "nav_values": "Values",
         "nav_merch": "Merch",
@@ -187,7 +196,7 @@ TRANSLATIONS = {
         "alt_stick2": "Stickers with LeaderX slogans",
         "alt_hero": "LeaderX logo — a golden X on a navy background",
         "alt_shield": "LeaderX shield emblem",
-        "title": "LeaderX — Kósbasshy bul",
+        "title": "LeaderX — Leadership. Results. Change.",
         "description": "A community of young leaders in Kazakhstan. Applications to the LeaderX team are open."
     }
 }
