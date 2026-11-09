@@ -21,7 +21,7 @@
 </head>
 <body>
 <nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
-<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
 <header class="sub"><div class="wrap"><h1>Тест нәтижелері</h1><p>Тест тапсырғандардың аты-жөні, тобы және нәтижесі. Уақыт: UTC+{{ tz }}. Бұл жеке деректер: басқаларға таратпаңыз.</p></div></header>
 <main><div class="wrap kpi-page">
 
@@ -32,18 +32,24 @@
 <div class="lx-f"><label for="fq">Аты-жөні / байланыс</label><input id="fq" name="q" type="text" value="{{ f.q }}" maxlength="60"></div>
 <button type="submit" class="lx-b">Көрсету</button>
 <a class="lx-b o" href="{{ url_for('admin_results') }}">Тазалау</a>
-<a class="lx-b o" href="{{ url_for('admin_results_csv', test=f.test, grp=f.grp, q=f.q) }}">Excel-ге жүктеу (CSV)</a>
+<a class="lx-b" href="{{ url_for('admin_results_xlsx', test=f.test, grp=f.grp, q=f.q) }}">Excel (.xlsx){% if not f.test %}: әр тест бөлек парақта{% endif %}</a>
+<a class="lx-b o" href="{{ url_for('admin_results_csv', test=f.test, grp=f.grp, q=f.q) }}">CSV</a>
 </form></div>
 
 <div class="grid" style="margin-bottom:22px">
 <div class="card"><div class="k">ТАБЫЛДЫ</div><h3>{{ rows|length }}</h3><p>нәтиже{% if rows|length >= 1000 %} (соңғы 1000){% endif %}</p></div>
 <div class="card"><div class="k">ТОП БОЙЫНША ОРТАША</div>
-<table class="kpi"><tbody>{% for g, c, avg in summary %}<tr><td>{{ g }} · {{ c }} адам</td><td>{{ avg }}%</td></tr>{% else %}<tr><td colspan="2">—</td></tr>{% endfor %}</tbody></table></div>
+<table class="kpi"><tbody>{% for g, c, avg in summary %}<tr><td>{{ g }} · {{ c }} адам</td><td>{% if avg is none %}—{% else %}{{ avg }}%{% endif %}</td></tr>{% else %}<tr><td colspan="2">—</td></tr>{% endfor %}</tbody></table></div>
 </div>
 
-<div class="card"><div class="k">НӘТИЖЕЛЕР</div>
+<div class="card" style="margin-bottom:22px"><div class="k">ТЕСТТЕР БОЙЫНША</div>
+<div class="kpi-wrap"><table class="kpi"><thead><tr><th>Тест</th><th>Нәтиже саны</th><th></th></tr></thead><tbody>
+{% for tid, tname, n in counts %}<tr><td>{{ tname }}</td><td>{{ n }}</td><td style="white-space:nowrap"><a href="{{ url_for('admin_results', test=tid) }}" style="color:inherit">Көру</a> · <a href="{{ url_for('admin_results_xlsx', test=tid) }}" style="color:inherit">Excel</a></td></tr>{% endfor %}
+</tbody></table></div></div>
+
+<div class="card"><div class="k">НӘТИЖЕЛЕР{% if f.test %} · {{ tests[f.test] }}{% endif %}</div>
 <div class="kpi-wrap"><table class="kpi"><thead><tr><th>Уақыт</th><th>Аты-жөні</th><th>Топ</th><th>Байланыс</th><th>Жалпы</th>{% for s in scales %}<th>{{ s }}</th>{% endfor %}<th></th></tr></thead>
-<tbody>{% for r in rows %}<tr><td class="lx-score">{{ r.time }}</td><td>{{ r.name }}</td><td>{{ r.grp }}</td><td style="word-break:break-all">{{ r.contact or '—' }}</td><td class="lx-score"><b>{{ r.total }}%</b></td>{% for v in r.scores %}<td class="lx-score">{{ v }}%</td>{% endfor %}
+<tbody>{% for r in rows %}<tr><td class="lx-score">{{ r.time }}</td><td>{{ r.name }}</td><td>{{ r.grp }}</td><td style="word-break:break-all">{{ r.contact or '—' }}</td><td class="lx-score"><b>{% if r.total is none %}—{% else %}{{ r.total }}%{% endif %}</b></td>{% if scales %}{% for v in r.scores %}<td class="lx-score">{{ v }}%</td>{% endfor %}{% endif %}
 <td><form method="post" action="{{ url_for('admin_results_delete') }}" onsubmit="return confirm('Бұл нәтижені өшіру керек пе?')"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="id" value="{{ r.id }}"><input type="hidden" name="back" value="{{ back }}"><button type="submit" class="lx-del">Өшіру</button></form></td></tr>
 {% else %}<tr><td colspan="{{ 6 + scales|length }}">Әзірге нәтиже жоқ</td></tr>{% endfor %}</tbody></table></div></div>
 </div></main>

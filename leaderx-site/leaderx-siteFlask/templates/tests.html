@@ -28,7 +28,8 @@
 <div class="grid">
 {% for it in b["items"] %}
 <div class="card tcard"><div><div class="k">{{ '%02d' % loop.index }}</div><h3>{{ it.names[lang] if it.names else it.name }}</h3></div>
-{% if it.route %}<a class="btn" href="{{ url_for(it.route, lang=lang) }}">{{ ui.start }} →</a>
+{% if it.qid %}<a class="btn" href="{{ url_for('quiz', lang=lang, qid=it.qid) }}">{{ ui.start }} →</a>
+{% elif it.route %}<a class="btn" href="{{ url_for(it.route, lang=lang) }}">{{ ui.start }} →</a>
 {% elif it.url %}<a class="btn" target="_blank" rel="noopener" href="{{ it.url }}">{{ ui.open }} →</a>
 {% elif it.file %}<a class="btn o" download href="{{ url_for('static', filename='docs/' ~ it.file) }}">{{ ui.download }}</a>
 {% else %}<span class="soon">{{ ui.soon }}</span>{% endif %}

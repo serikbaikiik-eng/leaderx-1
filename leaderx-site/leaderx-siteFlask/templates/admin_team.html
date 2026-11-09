@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Команда — LeaderX Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+<style>
+[hidden]{display:none !important}
+.lx-b{display:inline-block;box-sizing:border-box;height:42px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#e8cf8a,#c9a54b);color:#0a1428;font:inherit;font-size:14px;font-weight:700;line-height:42px;cursor:pointer;text-decoration:none}
+.lx-b.o{background:transparent;border:1px solid #c9a54b;color:inherit;line-height:40px}
+.lx-b.s{height:34px;line-height:32px;padding:0 12px;font-size:13px}
+.lx-del{background:none;border:0;color:#ffb4bd;cursor:pointer;font:inherit;font-size:13px;padding:0 4px}
+.lx-ok{margin:0 0 18px;padding:10px 14px;border-radius:10px;background:#12301f;border:1px solid #2c6b49;color:#a8e6c4}
+.lx-err{margin:0 0 18px;padding:10px 14px;border-radius:10px;background:#3a1a1f;border:1px solid #7a2f3a;color:#ffb4bd}
+.tm-list{display:grid;gap:14px}
+.tm-row{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:14px 16px;border:1px solid #25375f;border-radius:14px;background:#132447}
+.tm-ph{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #c9a54b;flex:none;background:#0a1428}
+.tm-ph.n{display:grid;place-items:center;color:#f6e4a6;font:700 22px "Playfair Display",serif}
+.tm-info{flex:1;min-width:180px}.tm-info b{display:block;font-size:17px}.tm-info span{opacity:.75;font-size:14px}
+.tm-act{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.tm-act form{display:inline;margin:0}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_results') }}">Нәтижелер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<header class="sub"><div class="wrap"><h1>Команда</h1><p>Сайттағы «Біздің команда» бөлімі осы жерден басқарылады. Мүшені қосыңыз, суретін және толық ақпаратын (резюме сияқты) толтырыңыз, ол сайтта карточка болып шығады, басқанда профилі ашылады.</p></div></header>
+<main><div class="wrap kpi-page">
+{% if msg == 'saved' %}<div class="lx-ok">Сақталды.</div>{% elif msg == 'deleted' %}<div class="lx-ok">Өшірілді.</div>{% endif %}
+<p style="margin:0 0 20px"><a class="lx-b" href="{{ url_for('admin_team_edit') }}">+ Жаңа мүше қосу</a> <a class="lx-b o" href="{{ url_for('index', lang='kk') }}#team">Сайтта көру</a></p>
+<div class="tm-list">
+{% for m in members %}<div class="tm-row">
+{% if m.has_photo %}<img class="tm-ph" src="{{ url_for('team_photo', mid=m.id, v=m.updated) }}" alt="">{% else %}<div class="tm-ph n">{{ m.name[:1] }}</div>{% endif %}
+<div class="tm-info"><b>{{ m.name }}</b><span>{{ (m.i18n.get('kk') or {}).get('role') or '—' }}</span></div>
+<div class="tm-act">
+<form method="post" action="{{ url_for('admin_team_move', mid=m.id) }}"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="dir" value="up"><button class="lx-b o s" type="submit" title="Жоғары"{% if loop.first %} disabled style="opacity:.35"{% endif %}>↑</button></form>
+<form method="post" action="{{ url_for('admin_team_move', mid=m.id) }}"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><input type="hidden" name="dir" value="down"><button class="lx-b o s" type="submit" title="Төмен"{% if loop.last %} disabled style="opacity:.35"{% endif %}>↓</button></form>
+<a class="lx-b s" href="{{ url_for('admin_team_edit', mid=m.id) }}">Өңдеу</a>
+<form method="post" action="{{ url_for('admin_team_delete', mid=m.id) }}" onsubmit="return confirm('Бұл мүшені өшіру керек пе?')"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="lx-del">Өшіру</button></form>
+</div></div>
+{% else %}<p>Әзірге мүше жоқ.</p>{% endfor %}
+</div>
+</div></main>
+<footer><div class="wrap"><span>© 2026 LeaderX · admin</span></div></footer>
+</body>
+</html>
