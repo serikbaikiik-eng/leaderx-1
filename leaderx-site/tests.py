@@ -11,11 +11,13 @@ BLOCKS = [
         {"name": "Опросник на определение типа последователя", "url": P + "northL.html"},
     ]},
     {"id": "qualities", "items": [
+        {"names": {"kk": "LeaderX: көшбасшы қасиеттері", "ru": "LeaderX: лидерские качества", "en": "LeaderX: leader qualities"}, "qid": "qualities"},
         {"name": "Опросник для определения лидерских качеств", "url": P + "northB.html"},
         {"name": "Тест на определение лидерских качеств", "url": P + "tmklid.html"},
         {"name": "Оценка коммуникативно-лидерских способностей", "url": P + "amanB.html"},
     ]},
     {"id": "styles", "items": [
+        {"names": {"kk": "LeaderX: көшбасшылық стилі", "ru": "LeaderX: стиль лидерства", "en": "LeaderX: leadership style"}, "qid": "style"},
         {"name": "Опросник стиля лидерства по теории «путь – цель»", "url": P + "northE.html"},
         {"name": "Опросник аутентичного лидерства, ALQ", "url": "https://psytests.org/result?v=nrlH1JDL&pp=1"},
         {"name": "Опросник по адаптивному лидерству", "url": P + "northJ.html"},
