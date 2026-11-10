@@ -1,6 +1,6 @@
-import hashlib, hmac, os, secrets, time
+import hashlib, hmac, os, re, secrets, time
 from datetime import timedelta
-from flask import Flask, Response, render_template, redirect, url_for, request, abort, session, jsonify
+from flask import Flask, Response, render_template, redirect, url_for, request, abort, session, jsonify, send_file
 import analytics
 import results
 from translations import TRANSLATIONS
@@ -10,6 +10,7 @@ from leadtest import DATA as LEAD_DATA
 import quizzes
 from quizzes import QUIZZES
 import team as team_mod
+import library as lib_mod
 
 # Орыс мәтініндегі «Перемены» сөзін «Изменение» деп ауыстыру
 for _k, _v in list(TRANSLATIONS.get("ru", {}).items()):
@@ -18,7 +19,7 @@ for _k, _v in list(TRANSLATIONS.get("ru", {}).items()):
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 60 * 60 * 24 * 7
-app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # сурет жүктеу үшін (админ)
+app.config["MAX_CONTENT_LENGTH"] = 32 * 1024 * 1024  # сурет пен кітап файлын жүктеу үшін (админ)
 # Сессия кілті: SECRET_KEY орнатылмаса, ADMIN_PASSWORD негізінде жасалады
 app.secret_key = os.environ.get("SECRET_KEY") or hashlib.sha256(("leaderx-session|" + (os.environ.get("ADMIN_PASSWORD") or "off")).encode()).hexdigest()
 app.config.update(
@@ -44,7 +45,7 @@ def asset_version():
     return {"css_v": int(os.path.getmtime(p)) if os.path.exists(p) else 0}
 
 
-TRACKED = {"index", "kpi", "tests", "leadership", "quiz"}
+TRACKED = {"index", "kpi", "tests", "leadership", "quiz", "library", "library_leaders", "library_leader"}
 
 
 @app.before_request
@@ -246,6 +247,152 @@ def admin_team_move(mid):
     return redirect(url_for("admin_team"))
 
 
+# ------------------------------------------------------------------ кітапхана (көпшілікке)
+@app.route("/<lang>/library")
+def library(lang):
+    if lang not in LANGS:
+        abort(404)
+    data = {"lessons": [lib_mod.public_json(x) for x in lib_mod.list_items("lesson")],
+            "books": [lib_mod.public_json(x) for x in lib_mod.list_items("book")]}
+    return render_template("library.html", lang=lang, langs=LANGS, data=data, form_url=FORM_URL)
+
+
+@app.route("/<lang>/library/leaders")
+def library_leaders(lang):
+    if lang not in LANGS:
+        abort(404)
+    grp = request.args.get("group", "")
+    grp = grp if grp in ("kz", "world") else "all"
+    items = [lib_mod.public_json(x) for x in lib_mod.list_items("leader")]
+    return render_template("library_leaders.html", lang=lang, langs=LANGS, leaders=items, group=grp, form_url=FORM_URL)
+
+
+@app.route("/<lang>/library/leaders/<lid>")
+def library_leader(lang, lid):
+    if lang not in LANGS:
+        abort(404)
+    d = lib_mod.get(lid, kind="leader", only_active=True)
+    if not d:
+        abort(404)
+    return render_template("library_leader.html", lang=lang, langs=LANGS, l=lib_mod.public_json(d), lid=lid, form_url=FORM_URL)
+
+
+@app.route("/library/file/<fid>")
+def library_file(fid):
+    d = lib_mod.get(fid, kind="book", only_active=True)
+    if not d or not d["has_file"]:
+        abort(404)
+    ext = d["file_ext"]
+    path = lib_mod.file_path(fid, ext)
+    if not os.path.exists(path):
+        abort(404)
+    name = (re.sub(r"[^\w.\- ]", "_", d["title"])[:80] or "book") + "." + ext
+    resp = send_file(path, mimetype=lib_mod.MIMES[ext].split(";")[0], as_attachment=(ext == "epub"), download_name=name, conditional=True)
+    if ext == "txt":
+        resp.headers["Content-Type"] = "text/plain; charset=utf-8"
+    resp.headers["X-Content-Type-Options"] = "nosniff"
+    return resp
+
+
+# ------------------------------------------------------------------ кітапхана (админ)
+def _lib_vals(kind, item, form):
+    ex = (item or {}).get("extra", {})
+    src = form if form is not None else None
+    def g(k, default=""):
+        return src.get(k, "") if src is not None else default
+    return {
+        "title": g("title", (item or {}).get("title", "")), "author": g("author", (item or {}).get("author", "")),
+        "category": g("category", (item or {}).get("category", "")), "level": g("level", (item or {}).get("level", "Бастапқы")),
+        "course": g("course", str((item or {}).get("course", 1))), "minutes": g("minutes", str((item or {}).get("minutes", 5))),
+        "description": g("description", (item or {}).get("description", "")), "lead": g("lead", (item or {}).get("lead", "")),
+        "body": g("body", (item or {}).get("body", "")),
+        "tags_text": g("tags", ", ".join((item or {}).get("tags", []))),
+        "source_name": g("source_name", ex.get("source_name", "")), "source_url": g("source_url", ex.get("source_url", "")),
+        "country": g("country", ex.get("country", "")), "group": g("group", ex.get("group", "kz")),
+        "years": g("years", ex.get("years", "")), "role": g("role", ex.get("role", "")),
+        "bio": g("bio", (item or {}).get("body", "")), "photo": g("photo", ex.get("photo", "")), "wiki": g("wiki", ex.get("wiki", "")),
+    }
+
+
+@app.route("/admin/library")
+def admin_library():
+    gate = _admin_gate()
+    if gate:
+        return gate
+    kind = request.args.get("kind", "lesson")
+    kind = kind if kind in lib_mod.KINDS else "lesson"
+    q = request.args.get("q", "")[:60]
+    tabs = {k: len(lib_mod.list_items(k, hidden=True)) for k in lib_mod.KINDS}
+    resp = Response(render_template("admin_library.html", kind=kind, q=q, items=lib_mod.list_items(kind, hidden=True, q=q),
+                                    tabs=tabs, msg=request.args.get("msg", "")))
+    resp.headers["Cache-Control"] = "no-store"
+    resp.headers["X-Robots-Tag"] = "noindex, nofollow"
+    return resp
+
+
+@app.route("/admin/library/new/<kind>", methods=["GET", "POST"])
+@app.route("/admin/library/<iid>/edit", methods=["GET", "POST"])
+def admin_library_edit(kind=None, iid=None):
+    gate = _admin_gate()
+    if gate:
+        return gate
+    item = None
+    if iid:
+        item = lib_mod.get(iid)
+        if not item:
+            abort(404)
+        kind = item["kind"]
+    if kind not in lib_mod.KINDS:
+        abort(404)
+    error = None
+    form = request.form if request.method == "POST" else None
+    if request.method == "POST":
+        if not _csrf_ok():
+            error = "Сессия ескірді. Бетті жаңартып, қайталаңыз."
+        else:
+            file_data, fname = None, ""
+            f = request.files.get("file")
+            if kind == "book" and f and f.filename:
+                file_data = lib_mod.check_file(f.read(lib_mod.MAX_FILE + 1))
+                fname = f.filename
+                if not file_data:
+                    error = "Файл қабылданбады. PDF, EPUB немесе TXT болуы және 30 МБ-тан аспауы керек."
+            if not error:
+                try:
+                    lib_mod.save(kind, iid, request.form, file_data, fname, remove_file=bool(request.form.get("rm_file")))
+                except ValueError as e:
+                    error = str(e)
+                else:
+                    return redirect(url_for("admin_library", kind=kind, msg="saved"))
+    resp = Response(render_template("admin_library_edit.html", kind=kind, item=item, v=_lib_vals(kind, item, form), error=error,
+                                    levels=lib_mod.LEVELS), 400 if error else 200)
+    resp.headers["Cache-Control"] = "no-store"
+    resp.headers["X-Robots-Tag"] = "noindex, nofollow"
+    return resp
+
+
+@app.route("/admin/library/<iid>/toggle", methods=["POST"])
+def admin_library_toggle(iid):
+    gate = _admin_gate()
+    if gate:
+        return gate
+    d = lib_mod.get(iid)
+    if d and _csrf_ok():
+        lib_mod.set_active(iid, not d["active"])
+    return redirect(url_for("admin_library", kind=d["kind"] if d else "lesson"))
+
+
+@app.route("/admin/library/<iid>/delete", methods=["POST"])
+def admin_library_delete(iid):
+    gate = _admin_gate()
+    if gate:
+        return gate
+    d = lib_mod.get(iid)
+    if d and _csrf_ok():
+        lib_mod.delete(iid)
+    return redirect(url_for("admin_library", kind=d["kind"] if d else "lesson", msg="deleted"))
+
+
 @app.route("/admin/results")
 def admin_results():
     gate = _admin_gate()
@@ -333,7 +480,7 @@ def index(lang):
     if lang not in LANGS:
         abort(404)
     return render_template("index.html", lang=lang, langs=LANGS, t=TRANSLATIONS[lang], form_url=FORM_URL,
-                           team=team_mod.public_list(lang))
+                           team=team_mod.public_list(lang), lib=lib_mod.counts())
 
 
 @app.route("/<lang>/kpi")
