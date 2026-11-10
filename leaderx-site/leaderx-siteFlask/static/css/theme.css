@@ -1,0 +1,28 @@
+/* LeaderX theme.css — бір түстер палитрасы (қалқан суретінен алынған).
+   style.css-тен КЕЙІН қосылады, сондықтан онда жазылған түстерді ауыстырады.
+   Палитра:
+   қою көк  #0a1d40  (#040f2c — ең қою, #11284f — карточка, #25407a — жиек)
+   шампань-алтын  #c4b091  (ашығы #d9ccb0 / #ece3cf, қарайғаны #a38d68)
+   піл сүйегі (ivory)  #e5dfd7 */
+:root{
+  --navy:#0a1d40;--navy-2:#0e2450;--navy2:#0e2450;--navy-3:#12305f;--navy3:#12305f;--navy-deep:#040f2c;--ink:#0a1d40;
+  --gold:#c4b091;--gold-2:#d9ccb0;--gold2:#d9ccb0;--gold-3:#ece3cf;--gold3:#ece3cf;--gold-dark:#a38d68;--gold-deep:#a38d68;
+  --cream:#e5dfd7;--cream-2:#efeae2;--ivory:#e5dfd7;--bg-light:#e5dfd7;--paper:#e5dfd7;
+}
+/* негізгі компоненттер (style.css-тегі алтын мен көк түстерді жаңа палитраға келтіру) */
+nav{background:rgba(10,29,64,.94);border-bottom-color:rgba(196,176,145,.28)}
+.logo b,.logo span{color:#c4b091}
+.btn{background:linear-gradient(135deg,#ece3cf,#c4b091);color:#0a1d40}
+.btn:hover{box-shadow:0 10px 26px rgba(196,176,145,.35)}
+.btn.o{background:transparent;color:#ece3cf;border-color:#c4b091}
+.lang a.on{background:#d9ccb0;color:#0a1d40}
+.tag{color:#c4b091}.tag.d{color:#a38d68}
+.dark,section.dark{background:#0a1d40}
+.card{border-color:#25407a}
+.dark .card,.join .card{background:#11284f;border-color:#25407a}
+.card .k{color:#c4b091}
+.gold{color:#c4b091}
+footer{background:#040f2c}
+.list li span,.kpi th{color:#a38d68}
+a:focus-visible,button:focus-visible{outline-color:#c4b091}
+::selection{background:#c4b091;color:#0a1d40}

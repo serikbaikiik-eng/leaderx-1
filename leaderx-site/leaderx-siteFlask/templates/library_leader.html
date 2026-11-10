@@ -1,0 +1,25 @@
+{% extends "library_base.html" %}
+{% set U = {
+'kk':{'back':'← Көшбасшылар','bio':'Өмірбаяны және қызметі','idea':'Көшбасшылық туралы ой','more':'Қосымша оқу','wiki':'Өмірбаян және әдебиеттер тізімі ↗','lic':'Wikimedia Commons · авторы және лицензиясы ↗','note':'Тұлғаның қызметі тарихи контексте қарастырылады; каталогқа енуі барлық көзқарасы мен шешімін мақұлдауды білдірмейді.'},
+'ru':{'back':'← Лидеры','bio':'Биография и деятельность','idea':'Мысль о лидерстве','more':'Дополнительное чтение','wiki':'Биография и список литературы ↗','lic':'Wikimedia Commons · автор и лицензия ↗','note':'Деятельность личности рассматривается в историческом контексте; включение в каталог не означает одобрения всех её взглядов и решений.'},
+'en':{'back':'← Leaders','bio':'Biography and work','idea':'A thought on leadership','more':'Further reading','wiki':'Biography and references ↗','lic':'Wikimedia Commons · author and licence ↗','note':'The person’s work is viewed in its historical context; inclusion in the catalogue does not mean endorsement of all their views and decisions.'}
+}[lang] %}
+{% block title %}{{ l.name }} — LeaderX{% endblock %}
+{% block main %}
+<article class="wrap">
+ <a class="lb-back" href="{{ url_for('library_leaders', lang=lang, group=l.group) }}">{{ U.back }}</a>
+ <div class="lb-prof">
+  <figure><div class="lb-pt"><span class="fb" hidden>{{ l.name[:1] }}</span>{% if l.photo %}<img id="pimg" src="https://commons.wikimedia.org/wiki/Special:FilePath/{{ l.photo|urlencode }}?width=700" alt="{{ l.name }}" referrerpolicy="no-referrer">{% else %}<span class="fb">{{ l.name[:1] }}</span>{% endif %}</div>
+   {% if l.photo %}<figcaption><a href="https://commons.wikimedia.org/wiki/File:{{ l.photo|replace(' ','_')|urlencode }}" target="_blank" rel="noopener noreferrer">{{ U.lic }}</a></figcaption>{% endif %}</figure>
+  <div><span class="eyebrow">{{ l.country }}</span><h1>{{ l.name }}</h1><p class="lb-yrs">{{ l.years }}{% if l.years and l.role %} · {% endif %}{{ l.role }}</p>
+   {% if l.summary %}<p style="font-size:19px;color:#fff">{{ l.summary }}</p>{% endif %}
+   {% if l.bio %}<h2>{{ U.bio }}</h2><p style="white-space:pre-wrap">{{ l.bio }}</p>{% endif %}
+   {% if l.lesson %}<div class="lb-key"><strong>{{ U.idea }}</strong><p>{{ l.lesson }}</p></div>{% endif %}
+   {% if l.wiki %}<h2>{{ U.more }}</h2><a href="https://en.wikipedia.org/wiki/{{ l.wiki|urlencode }}" target="_blank" rel="noopener noreferrer" style="color:#9fb2da">{{ U.wiki }}</a>{% endif %}
+   <p class="lb-note2">{{ U.note }}</p></div>
+ </div>
+</article>
+{% endblock %}
+{% block scripts %}
+<script>(function(){var im=document.getElementById('pimg');if(!im)return;var fb=im.parentNode.querySelector('.fb');function bad(){im.hidden=true;fb.hidden=false}im.addEventListener('error',bad);if(im.complete&&!im.naturalWidth)bad()})();</script>
+{% endblock %}

@@ -7,10 +7,11 @@
 <title>Admin — LeaderX</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css', v=css_v) }}">
 </head>
 <body>
 <nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
-<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_results') }}">Нәтижелер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline;margin-left:16px"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_results') }}">Нәтижелер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_library') }}">Кітапхана</a><a class="l" style="display:inline" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline;margin-left:16px"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
 <header class="sub"><div class="wrap"><h1>Келушілер</h1><p>Келушілердің толық мәліметі: IP, ел/қала, құрылғы, қайдан келгені. Уақыт: UTC+{{ tz }}. Деректер {{ s.keep }} күн сақталады.</p></div></header>
 <main><div class="wrap kpi-page">
 

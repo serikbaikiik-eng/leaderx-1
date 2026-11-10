@@ -2,10 +2,10 @@
    Чтобы отключить всё оформление, уберите одну строку <link> из index.html. */
 
 :root{
-  --lx-gold:#c9a54b;
-  --lx-gold-hi:#f6e4a6;
-  --lx-navy:#0a1428;
-  --lx-glow:rgba(201,165,75,.35);
+  --lx-gold:#c4b091;
+  --lx-gold-hi:#ece3cf;
+  --lx-navy:#0a1d40;
+  --lx-glow:rgba(196,176,145,.35);
 }
 
 /* ---------- Полоса прогресса прокрутки ---------- */
@@ -15,7 +15,7 @@
 
 /* ---------- Золотой текст с переливом ---------- */
 .gold{
-  background:linear-gradient(100deg,#b8903a 0%,#f6e4a6 35%,#c9a54b 55%,#f6e4a6 80%,#b8903a 100%);
+  background:linear-gradient(100deg,#a38d68 0%,#ece3cf 35%,#c4b091 55%,#ece3cf 80%,#a38d68 100%);
   background-size:220% 100%;
   -webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;color:transparent;
@@ -28,9 +28,9 @@
 .hero::before{
   content:"";position:absolute;inset:-20%;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(40% 35% at 20% 30%,rgba(201,165,75,.20),transparent 70%),
+    radial-gradient(40% 35% at 20% 30%,rgba(196,176,145,.20),transparent 70%),
     radial-gradient(45% 40% at 80% 70%,rgba(40,70,160,.35),transparent 70%),
-    radial-gradient(30% 30% at 60% 20%,rgba(246,228,166,.10),transparent 70%);
+    radial-gradient(30% 30% at 60% 20%,rgba(236,227,207,.10),transparent 70%);
   animation:lx-aurora 18s ease-in-out infinite alternate;
 }
 @keyframes lx-aurora{
@@ -65,7 +65,7 @@
 /* ---------- Логотипы: рамка, парение, блик, искры ---------- */
 .lx-logo{
   position:relative;display:block;width:100%;overflow:hidden;border-radius:24px;
-  border:1px solid rgba(201,165,75,.5);background:#050b1a;will-change:transform,box-shadow;
+  border:1px solid rgba(196,176,145,.5);background:#040f2c;will-change:transform,box-shadow;
   animation:lx-float 8s ease-in-out infinite,lx-glow 5s ease-in-out infinite;
 }
 .lx-logo-hero{opacity:0;
@@ -78,7 +78,7 @@
 /* золотой блик пробегает по логотипу */
 .lx-logo::after{
   content:"";position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;
-  background:linear-gradient(115deg,transparent 38%,rgba(255,236,170,.30) 50%,transparent 62%);
+  background:linear-gradient(115deg,transparent 38%,rgba(250,242,222,.30) 50%,transparent 62%);
   transform:translateX(-130%);animation:lx-sweep 7s 2s ease-in-out infinite;
 }
 @keyframes lx-sweep{0%{transform:translateX(-130%)}35%,100%{transform:translateX(130%)}}
@@ -86,15 +86,15 @@
 .lx-sp{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;pointer-events:none;
   background:radial-gradient(circle,#fff 0 10%,rgba(255,226,140,.85) 24%,transparent 64%);
   opacity:0;transform:scale(0);animation:lx-twinkle 3.4s ease-in-out infinite}
-.lx-sp::before{content:"";position:absolute;inset:-4px;background:#fff8dc;
+.lx-sp::before{content:"";position:absolute;inset:-4px;background:#faf5e8;
   clip-path:polygon(50% 0,56% 44%,100% 50%,56% 56%,50% 100%,44% 56%,0 50%,44% 44%)}
 @keyframes lx-twinkle{0%,100%{opacity:0;transform:scale(0) rotate(0)}
   45%,55%{opacity:1;transform:scale(1) rotate(45deg)}70%{opacity:0;transform:scale(.3) rotate(90deg)}}
 @keyframes lx-pop{from{opacity:0;transform:scale(.92) translateY(30px)}to{opacity:1;transform:none}}
 @keyframes lx-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes lx-glow{
-  0%,100%{box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 22px rgba(201,165,75,.15)}
-  50%{box-shadow:0 26px 70px rgba(0,0,0,.5),0 0 52px rgba(201,165,75,.42)}
+  0%,100%{box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 22px rgba(196,176,145,.15)}
+  50%{box-shadow:0 26px 70px rgba(0,0,0,.5),0 0 52px rgba(196,176,145,.42)}
 }
 /* когда работает 3D-наклон от мыши, он управляет transform сам */
 .lx-logo.lx-tilt{animation:lx-glow 5s ease-in-out infinite;opacity:1;transition:transform .15s ease-out}
@@ -105,8 +105,8 @@
 
 /* ---------- Карточки ---------- */
 .card{transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s,box-shadow .35s}
-.card:hover{transform:translateY(-5px);border-color:var(--lx-gold);box-shadow:0 14px 34px rgba(0,0,0,.35),0 0 24px rgba(201,165,75,.18)}
-.card .k{background:linear-gradient(90deg,#c9a54b,#f6e4a6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.card:hover{transform:translateY(-5px);border-color:var(--lx-gold);box-shadow:0 14px 34px rgba(0,0,0,.35),0 0 24px rgba(196,176,145,.18)}
+.card .k{background:linear-gradient(90deg,#c4b091,#ece3cf);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
 .tcard:hover{transform:none}
 
 /* ---------- Кнопки: золотой блик ---------- */
@@ -116,7 +116,7 @@
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
   transform:skewX(-20deg);transition:left .7s ease;pointer-events:none;
 }
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(201,165,75,.35)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(196,176,145,.35)}
 .btn:hover::after{left:130%}
 /* у главной кнопки "Анкета" блик проходит сам раз в несколько секунд */
 .hero .btn:not(.o)::after{animation:lx-sheen 4.5s 2s ease-in-out infinite}
@@ -126,14 +126,14 @@
 .join{position:relative;isolation:isolate;overflow:hidden}
 .join::before{
   content:"";position:absolute;inset:-30%;z-index:-1;pointer-events:none;
-  background:conic-gradient(from 0deg at 50% 50%,transparent 0 70%,rgba(201,165,75,.14) 82%,transparent 95%);
+  background:conic-gradient(from 0deg at 50% 50%,transparent 0 70%,rgba(196,176,145,.14) 82%,transparent 95%);
   animation:lx-spin 28s linear infinite;
 }
 @keyframes lx-spin{to{transform:rotate(360deg)}}
 
 /* ---------- Навигация: стекло ---------- */
 nav{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(201,165,75,.25)}
+  border-bottom:1px solid rgba(196,176,145,.25)}
 
 /* ---------- Доступность ---------- */
 a:focus-visible,button:focus-visible{outline:2px solid var(--lx-gold);outline-offset:3px}

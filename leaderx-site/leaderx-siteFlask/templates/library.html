@@ -1,0 +1,97 @@
+{% extends "library_base.html" %}
+{% set U = {
+'kk':{'title':'Кітапхана — LeaderX','tag':'БІЛІМНЕН — СЕНІМДІ ҚАДАМҒА','h1a':'Адамды түсіну.','h1b':'Өзіңді дамыту.','p':'Психология мен көшбасшылықты жеңіл үйрен. Қысқа конспектілер, өмірлік мысалдар және кітаптар.','start':'Оқуды бастау →','for':'1–2 курсқа арналған',
+ 'nt':'СЕНІҢ АЛҒАШҚЫ ҚАДАМЫҢ','nh':'Күніне бір тақырып.','steps':[['Оқы','Негізгі ұғымды түсін.'],['Ойлан','Мысалды өз өміріңмен байланыстыр.'],['Тексер','Сұрақтарға өз сөзіңмен жауап бер.']],
+ 'mt':'ҮЙРЕНУДІ ОСЫНДАН БАСТА','mh':'Психология және көшбасшылық','c1':'1-курс','c2':'2-курс','all':'Барлығы','lvl':'Барлық деңгей','sl':'Тақырып іздеу…','items':'материал','course':'курс','minread':'минут оқу','read':'Оқу →',
+ 'lt':'ТАРИХТАН ҮЙРЕН','lh':'Көшбасшылық: тұлғалар мен тәжірибе','lp':'Өмірбаяндар, негізгі идеялар және тарихи мұра.','lkz':'Қазақстан көшбасшылары ↗','lw':'Әлем көшбасшылары ↗',
+ 'bt':'ОҚУ КӨКЖИЕГІН КЕҢЕЙТ','bh':'Кітаптар кітапханасы','bn':'Еркін оқу · Қолжетімді файлды жүктеу','bs':'Кітап немесе автор…','by':'Кім жазды','nf':'Сипаттама','hf':'Файл қолжетімді','open':'Ашу →','about':'Мазмұны мен мақсаты',
+ 'rf':'Кітап файлын оқу ↗','pdf':'PDF файлын бөлек ашу ↗','epub':'EPUB файлын жүктеу ↓','src':'Дереккөз','none':'Табылмады. Іздеу сөзін немесе сүзгіні өзгертіңіз.','noauth':'Автор көрсетілмеген (тақырыптық жинақ)','close':'Жабу','bad':'Файл ашылмады.',
+ 'lvmap':{'Бастапқы':'Бастапқы','Орта':'Орта'},'note':'Материалдар қазақ және орыс тілдерінде.'},
+'ru':{'title':'Библиотека — LeaderX','tag':'ОТ ЗНАНИЙ — К УВЕРЕННОМУ ШАГУ','h1a':'Понять человека.','h1b':'Развить себя.','p':'Изучай психологию и лидерство легко. Короткие конспекты, примеры из жизни и книги.','start':'Начать обучение →','for':'Для 1–2 курса',
+ 'nt':'ТВОЙ ПЕРВЫЙ ШАГ','nh':'Одна тема в день.','steps':[['Читай','Пойми основное понятие.'],['Думай','Свяжи пример со своей жизнью.'],['Проверь','Ответь на вопросы своими словами.']],
+ 'mt':'НАЧНИ УЧИТЬСЯ ЗДЕСЬ','mh':'Психология и лидерство','c1':'1 курс','c2':'2 курс','all':'Все','lvl':'Все уровни','sl':'Поиск по теме…','items':'материалов','course':'курс','minread':'минут чтения','read':'Читать →',
+ 'lt':'УЧИСЬ НА ИСТОРИИ','lh':'Лидерство: личности и опыт','lp':'Биографии, главные идеи и историческое наследие.','lkz':'Лидеры Казахстана ↗','lw':'Лидеры мира ↗',
+ 'bt':'РАСШИРЬ КРУГОЗОР','bh':'Библиотека книг','bn':'Свободное чтение · файл, если он доступен','bs':'Книга или автор…','by':'Автор','nf':'Описание','hf':'Файл доступен','open':'Открыть →','about':'Содержание и цель',
+ 'rf':'Читать файл книги ↗','pdf':'Открыть PDF отдельно ↗','epub':'Скачать EPUB ↓','src':'Источник','none':'Ничего не найдено. Измените поиск или фильтр.','noauth':'Автор не указан (тематический сборник)','close':'Закрыть','bad':'Не удалось открыть файл.',
+ 'lvmap':{'Бастапқы':'Начальный','Орта':'Средний'},'note':'Материалы на казахском и русском языках.'},
+'en':{'title':'Library — LeaderX','tag':'FROM KNOWLEDGE TO A CONFIDENT STEP','h1a':'Understand people.','h1b':'Grow yourself.','p':'Learn psychology and leadership the easy way. Short summaries, real-life examples and books.','start':'Start learning →','for':'For years 1–2',
+ 'nt':'YOUR FIRST STEP','nh':'One topic a day.','steps':[['Read','Grasp the core idea.'],['Reflect','Connect the example to your own life.'],['Check','Answer the questions in your own words.']],
+ 'mt':'START LEARNING HERE','mh':'Psychology and leadership','c1':'Year 1','c2':'Year 2','all':'All','lvl':'All levels','sl':'Search by topic…','items':'materials','course':'year','minread':'min read','read':'Read →',
+ 'lt':'LEARN FROM HISTORY','lh':'Leadership: people and experience','lp':'Biographies, key ideas and historical legacy.','lkz':'Leaders of Kazakhstan ↗','lw':'Leaders of the world ↗',
+ 'bt':'BROADEN YOUR HORIZONS','bh':'Book library','bn':'Free reading · file when available','bs':'Book or author…','by':'Author','nf':'Description','hf':'File available','open':'Open →','about':'Contents and purpose',
+ 'rf':'Read the book file ↗','pdf':'Open PDF separately ↗','epub':'Download EPUB ↓','src':'Source','none':'Nothing found. Change the search or filter.','noauth':'No author (thematic collection)','close':'Close','bad':'Could not open the file.',
+ 'lvmap':{'Бастапқы':'Beginner','Орта':'Intermediate'},'note':'Materials are in Kazakh and Russian.'}
+}[lang] %}
+{% block title %}{{ U.title }}{% endblock %}
+{% block main %}
+<section class="wrap lb-hero">
+ <div><div class="eyebrow">{{ U.tag }}</div><h1>{{ U.h1a }}<br><span>{{ U.h1b }}</span></h1><p>{{ U.p }}</p>
+  <a class="lb-btn" href="#materials">{{ U.start }}</a> <span class="muted" style="margin-left:12px">{{ U['for'] }}</span></div>
+ <aside class="lb-note"><div class="mark">L<span style="font-size:.7em">X</span></div><div class="eyebrow">{{ U.nt }}</div><h2>{{ U.nh }}</h2>
+  <ol>{% for a, b in U.steps %}<li><b>{{ a }}</b><span>{{ b }}</span></li>{% endfor %}</ol></aside>
+</section>
+
+<section id="materials" class="wrap lb-sec">
+ <div class="lb-head"><div><div class="eyebrow">{{ U.mt }}</div><h2>{{ U.mh }}</h2></div><span id="count" class="muted" role="status"></span></div>
+ <div class="lb-filters">
+  <div class="lb-seg" role="group"><button type="button" data-course="1" class="on">{{ U.c1 }}</button><button type="button" data-course="2">{{ U.c2 }}</button><button type="button" data-course="all">{{ U.all }}</button></div>
+  <input id="search" type="search" placeholder="{{ U.sl }}" aria-label="{{ U.sl }}">
+  <select id="level" aria-label="level"><option value="all">{{ U.lvl }}</option>{% for k, v in U.lvmap.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}</select>
+ </div>
+ <div class="lb-grid" id="lessonGrid" aria-live="polite"></div>
+ <p class="muted" style="margin-top:14px">{{ U.note }}</p>
+</section>
+
+<section class="wrap"><div class="lb-strip"><div><div class="eyebrow">{{ U.lt }}</div><h2>{{ U.lh }}</h2><p>{{ U.lp }}</p></div>
+ <div class="st"><a class="lb-btn o" href="{{ url_for('library_leaders', lang=lang, group='kz') }}">{{ U.lkz }}</a><a class="lb-btn o" href="{{ url_for('library_leaders', lang=lang, group='world') }}">{{ U.lw }}</a></div></div></section>
+
+<section id="books" class="wrap lb-sec">
+ <div class="lb-head"><div><div class="eyebrow">{{ U.bt }}</div><h2>{{ U.bh }}</h2></div><span class="muted">{{ U.bn }}</span></div>
+ <div class="lb-filters"><input id="bookSearch" type="search" placeholder="{{ U.bs }}" aria-label="{{ U.bs }}"></div>
+ <div class="lb-grid" id="bookGrid" aria-live="polite"></div>
+</section>
+<dialog id="reader"><button type="button" class="x" aria-label="{{ U.close }}">×</button><div class="rd" id="rd"></div></dialog>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+  var D={{ data|tojson }}, U={{ U|tojson }}, FILE={{ url_for('library_file', fid='__ID__')|tojson }};
+  var $=function(i){return document.getElementById(i)}, course='1', dlg=$('reader');
+  var esc=function(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+  var lv=function(x){return U.lvmap[x]||x};
+  function src(b){try{var u=new URL(b.source_url);if(u.protocol!=='https:'&&u.protocol!=='http:')return '';
+    return '<p class="lb-src"><a href="'+esc(u.href)+'" target="_blank" rel="noopener noreferrer">'+U.src+': '+esc(b.source_name||u.hostname)+' ↗</a></p>'}catch(e){return ''}}
+  function find(list,id){for(var i=0;i<list.length;i++)if(list[i].id===id)return list[i]}
+  function lessons(){
+    var q=$('search').value.toLowerCase(), l=$('level').value;
+    var list=D.lessons.filter(function(a){return (course==='all'||String(a.course)===course)&&(l==='all'||a.level===l)&&(a.title+' '+a.description).toLowerCase().indexOf(q)>-1});
+    $('count').textContent=list.length+' '+U.items;
+    $('lessonGrid').innerHTML=list.length?list.map(function(a){return '<article class="lb-card"><div class="lb-top"><span class="lb-tag">'+esc(a.course)+'-'+U.course+'</span><span>'+esc(lv(a.level))+'</span></div><h3>'+esc(a.title)+'</h3><p>'+esc(a.description)+'</p><div class="lb-bottom"><span class="muted">'+esc(a.time)+' '+U.minread+'</span><button type="button" class="lb-link" data-l="'+esc(a.id)+'">'+U.read+'</button></div></article>'}).join(''):'<p class="lb-empty">'+U.none+'</p>';
+    [].forEach.call(document.querySelectorAll('[data-l]'),function(b){b.onclick=function(){openLesson(find(D.lessons,b.dataset.l))}});
+  }
+  function books(){
+    var q=$('bookSearch').value.toLowerCase();
+    var list=D.books.filter(function(a){return (a.title+' '+a.author+' '+a.description).toLowerCase().indexOf(q)>-1});
+    $('bookGrid').innerHTML=list.length?list.map(function(a){return '<article class="lb-card"><div class="lb-cover">'+esc(a.category||'LeaderX')+'</div><h3>'+esc(a.title)+'</h3><p><strong>'+U.by+':</strong> '+esc(a.author||U.noauth)+'</p><p>'+esc(a.description)+'</p>'+(a.tags&&a.tags.length?'<div class="lb-chips">'+a.tags.map(function(t){return '<span>'+esc(t)+'</span>'}).join('')+'</div>':'')+'<div class="lb-bottom"><span class="muted">'+(a.has_file?U.hf:U.nf)+'</span><button type="button" class="lb-link" data-b="'+esc(a.id)+'">'+U.open+'</button></div>'+src(a)+'</article>'}).join(''):'<p class="lb-empty">'+U.none+'</p>';
+    [].forEach.call(document.querySelectorAll('[data-b]'),function(b){b.onclick=function(){openBook(find(D.books,b.dataset.b))}});
+  }
+  function shell(html){$('rd').innerHTML=html;dlg.showModal();dlg.scrollTop=0}
+  function openLesson(a){shell('<div class="eyebrow">'+esc(a.category)+'</div><h2>'+esc(a.title)+'</h2><p class="meta">'+esc(a.course)+'-'+U.course+' · '+esc(lv(a.level))+' · '+esc(a.time)+' '+U.minread+'</p><div class="body">'+esc(a.body)+'</div>')}
+  function openBook(a){
+    shell('<div class="eyebrow">'+esc(a.category)+'</div><h2>'+esc(a.title)+'</h2><p class="meta"><strong>'+U.by+':</strong> '+esc(a.author||U.noauth)+'</p><h3>'+U.about+'</h3><div class="body">'+esc(a.description)+'</div>'+(a.has_file?'<p style="margin-top:20px"><button type="button" class="lb-btn" id="rf">'+U.rf+'</button></p><div id="bf"></div>':'')+src(a));
+    if(a.has_file)$('rf').onclick=function(){
+      var url=FILE.replace('__ID__',encodeURIComponent(a.id)), t=$('bf'); t.textContent='';
+      if(a.ext==='txt'){fetch(url).then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(x){var p=document.createElement('pre');p.textContent=x;t.appendChild(p)}).catch(function(){t.textContent=U.bad})}
+      else if(a.ext==='pdf'){var f=document.createElement('iframe');f.src=url;f.title=a.title;t.appendChild(f);var l=document.createElement('a');l.href=url;l.target='_blank';l.rel='noopener';l.className='lb-btn o';l.style.marginTop='12px';l.textContent=U.pdf;t.appendChild(l)}
+      else{var d=document.createElement('a');d.href=url;d.className='lb-btn';d.textContent=U.epub;t.appendChild(d)}
+    };
+  }
+  [].forEach.call(document.querySelectorAll('[data-course]'),function(b){b.onclick=function(){course=b.dataset.course;
+    [].forEach.call(document.querySelectorAll('[data-course]'),function(x){x.className=x===b?'on':''});lessons()}});
+  $('search').oninput=lessons; $('level').onchange=lessons; $('bookSearch').oninput=books;
+  dlg.querySelector('.x').onclick=function(){dlg.close()};
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+  lessons(); books();
+})();
+</script>
+{% endblock %}

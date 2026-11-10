@@ -1,0 +1,37 @@
+{% extends "library_base.html" %}
+{% set U = {
+'kk':{'title':'Көшбасшылар — LeaderX','tag':'ТАРИХТАН ҮЙРЕН','h1':'Көшбасшылар','p':'Өмірбаяндар, негізгі идеялар және тарихи мұра.','all':'Барлығы','kz':'Қазақстан','world':'Әлем','s':'Аты, ел немесе рөл…','n':'тұлға','read':'Өмірбаянын оқу ↗','none':'Тұлға табылмады. Басқа ат немесе ел атауын енгізіңіз.','nophoto':'Сурет жүктелмеді'},
+'ru':{'title':'Лидеры — LeaderX','tag':'УЧИСЬ НА ИСТОРИИ','h1':'Лидеры','p':'Биографии, главные идеи и историческое наследие.','all':'Все','kz':'Казахстан','world':'Мир','s':'Имя, страна или роль…','n':'личностей','read':'Читать биографию ↗','none':'Личность не найдена. Введите другое имя или страну.','nophoto':'Фото не загрузилось'},
+'en':{'title':'Leaders — LeaderX','tag':'LEARN FROM HISTORY','h1':'Leaders','p':'Biographies, key ideas and historical legacy.','all':'All','kz':'Kazakhstan','world':'World','s':'Name, country or role…','n':'people','read':'Read biography ↗','none':'No one found. Try another name or country.','nophoto':'Photo failed to load'}
+}[lang] %}
+{% block title %}{{ U.title }}{% endblock %}
+{% block main %}
+<section class="wrap lb-sec" style="padding-top:50px">
+ <div class="eyebrow">{{ U.tag }}</div><h1 style="font-size:clamp(32px,5vw,52px);margin:12px 0 10px">{{ U.h1 }}</h1><p style="color:#c9d2e6;font-size:18px;margin:0 0 26px">{{ U.p }}</p>
+ <div class="lb-filters">
+  <div class="lb-seg" role="group">{% for g, lab in (('all',U.all),('kz',U.kz),('world',U.world)) %}<button type="button" data-g="{{ g }}"{% if group == g %} class="on"{% endif %}>{{ lab }}</button>{% endfor %}</div>
+  <input id="ls" type="search" placeholder="{{ U.s }}" aria-label="{{ U.s }}"><span id="lc" class="muted" role="status"></span>
+ </div>
+ <div class="lb-leaders" id="lg">
+ {% for l in leaders %}<a class="lb-lc" data-g="{{ l.group }}" data-t="{{ (l.name ~ ' ' ~ l.country ~ ' ' ~ l.role)|lower }}" href="{{ url_for('library_leader', lang=lang, lid=l.id) }}">
+  <div class="lb-pt"><span class="fb" hidden>{{ l.name[:1] }}</span>{% if l.photo %}<img src="https://commons.wikimedia.org/wiki/Special:FilePath/{{ l.photo|urlencode }}?width=600" alt="{{ l.name }}" loading="lazy" referrerpolicy="no-referrer">{% else %}<span class="fb">{{ l.name[:1] }}</span>{% endif %}</div>
+  <div class="lb-lcb"><span class="eyebrow">{{ l.country }}</span><h2>{{ l.name }}</h2><span class="lb-yrs">{{ l.years }}{% if l.years and l.role %} · {% endif %}{{ l.role }}</span><p>{{ l.summary }}</p><span class="lb-link">{{ U.read }}</span></div></a>{% endfor %}
+ </div>
+ <p id="le" class="lb-empty" hidden>{{ U.none }}</p>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(function(){
+  var g='{{ group }}', cards=[].slice.call(document.querySelectorAll('.lb-lc')), btns=[].slice.call(document.querySelectorAll('.lb-seg button')), inp=document.getElementById('ls');
+  function f(){var q=inp.value.trim().toLowerCase(),n=0;
+    cards.forEach(function(c){var ok=(g==='all'||c.dataset.g===g)&&c.dataset.t.indexOf(q)>-1;c.hidden=!ok;if(ok)n++});
+    document.getElementById('lc').textContent=n+' {{ U.n }}';document.getElementById('le').hidden=n>0}
+  btns.forEach(function(b){b.onclick=function(){g=b.dataset.g;btns.forEach(function(x){x.className=x===b?'on':''});f()}});
+  inp.oninput=f;
+  cards.forEach(function(c){var im=c.querySelector('img');if(!im)return;var fb=c.querySelector('.fb');
+    function bad(){im.hidden=true;fb.hidden=false}im.addEventListener('error',bad);if(im.complete&&!im.naturalWidth)bad()});
+  f();
+})();
+</script>
+{% endblock %}

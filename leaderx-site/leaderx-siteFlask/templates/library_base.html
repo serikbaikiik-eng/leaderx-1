@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{% block title %}LeaderX Library{% endblock %}</title>
+<meta name="description" content="{% block desc %}LeaderX: психология және көшбасшылық кітапханасы{% endblock %}">
+{% for l in langs %}<link rel="alternate" hreflang="{{ l }}" href="{{ url_for(request.endpoint, **dict(request.view_args, lang=l, _external=True)) }}">
+{% endfor %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css', v=css_v) }}">
+<style>
+[hidden]{display:none !important}
+.lb{background:radial-gradient(90% 60% at 50% 0%,#12305f 0%,#0a1d40 70%);color:#e9edf7;padding:10px 0 70px;min-height:70vh}
+.lb h1,.lb h2,.lb h3{font-family:"Playfair Display",serif;color:#fff}
+.lb .eyebrow{font:700 11px Raleway,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#c4b091}
+.lb .muted{color:#8f9bb8;font-size:14px}
+.lb-btn{display:inline-block;padding:12px 24px;border-radius:999px;border:0;background:linear-gradient(135deg,#d9ccb0,#c4b091);color:#0a1d40;font:700 15px Raleway,sans-serif;cursor:pointer;text-decoration:none;transition:transform .25s,box-shadow .25s}
+.lb-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(196,176,145,.35)}
+.lb-btn.o{background:transparent;border:1px solid #c4b091;color:#ece3cf}
+.lb-hero{display:grid;gap:40px;align-items:center;padding:60px 0 40px}
+@media(min-width:900px){.lb-hero{grid-template-columns:1.35fr 1fr;gap:70px}}
+.lb-hero h1{font-size:clamp(34px,5vw,58px);line-height:1.12;margin:16px 0 18px}
+.lb-hero h1 span{background:linear-gradient(100deg,#a38d68,#ece3cf,#c4b091);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lb-hero p{color:#c9d2e6;font-size:18px;line-height:1.6;margin:0 0 26px;max-width:520px}
+.lb-note{padding:28px;border-radius:22px;border:1px solid rgba(196,176,145,.4);background:linear-gradient(160deg,rgba(17,40,79,.9),rgba(10,29,64,.9));box-shadow:0 20px 50px rgba(0,0,0,.35)}
+.lb-note .mark{font:700 44px "Playfair Display",serif;color:#c4b091;margin-bottom:6px}
+.lb-note h2{margin:8px 0 14px;font-size:26px}
+.lb-note ol{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.lb-note li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:2px 12px}
+.lb-note li::before{content:counter(s);grid-row:span 2;align-self:center;width:30px;height:30px;border-radius:50%;border:1px solid #c4b091;display:grid;place-items:center;color:#ece3cf;font-weight:700}
+.lb-note b{color:#fff}.lb-note span{color:#b9c4dd;font-size:14px}
+.lb-sec{padding:44px 0 6px}
+.lb-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.lb-head h2{margin:8px 0 0;font-size:clamp(26px,3.6vw,36px)}
+.lb-filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+.lb-seg{display:inline-flex;border:1px solid #25407a;border-radius:999px;overflow:hidden}
+.lb-seg button{border:0;background:transparent;color:#c9d2e6;padding:10px 18px;font:600 14px Raleway,sans-serif;cursor:pointer}
+.lb-seg button.on{background:linear-gradient(135deg,#d9ccb0,#c4b091);color:#0a1d40}
+.lb input[type=search],.lb select{height:44px;box-sizing:border-box;padding:0 16px;border-radius:999px;border:1px solid #25407a;background:#0a1d40;color:#fff;font:500 15px Raleway,sans-serif;min-width:200px}
+.lb select{padding-right:34px}
+.lb input:focus,.lb select:focus{outline:2px solid #c4b091;outline-offset:1px}
+.lb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:18px}
+.lb-card{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:20px;border:1px solid #25407a;background:#11284f;transition:transform .3s cubic-bezier(.2,.7,.2,1),border-color .3s,box-shadow .3s}
+.lb-card:hover{transform:translateY(-4px);border-color:#c4b091;box-shadow:0 16px 36px rgba(0,0,0,.35)}
+.lb-card h3{margin:0;font-size:20px;line-height:1.3}
+.lb-card p{margin:0;color:#c9d2e6;line-height:1.55;font-size:15px}
+.lb-top{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#8f9bb8}
+.lb-tag{padding:3px 12px;border-radius:999px;border:1px solid rgba(196,176,145,.6);color:#ece3cf;font-weight:700;font-size:12px}
+.lb-bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;padding-top:6px}
+.lb-link{border:0;background:none;color:#d9ccb0;font:700 15px Raleway,sans-serif;cursor:pointer;padding:6px 0}
+.lb-link:hover{color:#fff}
+.lb-cover{display:grid;place-items:center;min-height:90px;padding:14px;border-radius:14px;background:linear-gradient(135deg,#1d3f78,#0e2450);border:1px solid #2f4d8a;color:#ece3cf;font:700 13px Raleway,sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:center}
+.lb-chips{display:flex;flex-wrap:wrap;gap:6px}.lb-chips span{padding:3px 10px;border-radius:999px;background:rgba(196,176,145,.1);color:#d9ccb0;font-size:12.5px}
+.lb-src a{color:#9fb2da;font-size:13px;text-decoration:underline}
+.lb-empty{color:#8f9bb8;padding:20px 0}
+.lb-strip{margin:50px 0 0;padding:30px 32px;border-radius:22px;border:1px dashed rgba(196,176,145,.55);background:rgba(196,176,145,.06);display:flex;gap:22px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+.lb-strip h2{margin:8px 0 6px;font-size:28px}.lb-strip p{margin:0;color:#c9d2e6}
+.lb-strip .st{display:grid;gap:10px}
+#reader{width:min(94vw,860px);max-height:92vh;padding:0;border:1px solid #c4b091;border-radius:22px;background:linear-gradient(165deg,#12305f,#0a1d40);color:#e9edf7;overflow:auto}
+#reader::backdrop{background:rgba(4,14,40,.82);backdrop-filter:blur(3px)}
+#reader .rd{padding:34px 34px 38px}
+#reader h2{margin:10px 0 8px;font-size:clamp(24px,4vw,34px);color:#fff}
+#reader h3{margin:22px 0 8px;font-size:17px;color:#d9ccb0}
+#reader .meta{color:#b9c4dd;margin:0 0 18px}
+#reader .body{white-space:pre-wrap;line-height:1.75;font-size:16.5px;color:#e9edf7}
+#reader .x{position:absolute;top:12px;right:14px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(10,29,64,.85);color:#fff;font-size:26px;line-height:1;cursor:pointer}
+#reader iframe{width:100%;height:68vh;border:1px solid #25407a;border-radius:12px;background:#fff;margin-top:14px}
+#reader pre{white-space:pre-wrap;line-height:1.7;margin-top:14px;font-family:inherit}
+.lb-leaders{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:20px}
+.lb-lc{display:flex;flex-direction:column;border-radius:20px;overflow:hidden;border:1px solid #25407a;background:#11284f;text-decoration:none;color:inherit;transition:transform .3s,border-color .3s,box-shadow .3s}
+.lb-lc:hover{transform:translateY(-5px);border-color:#c4b091;box-shadow:0 18px 40px rgba(0,0,0,.4)}
+.lb-pt{position:relative;aspect-ratio:4/5;background:linear-gradient(160deg,#1d3f78,#0a1d40);overflow:hidden}
+.lb-pt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top}
+.lb-pt .fb{position:absolute;inset:0;display:grid;place-items:center;font:700 56px "Playfair Display",serif;color:#c4b091}
+.lb-lcb{padding:18px 20px 22px;display:grid;gap:6px}
+.lb-lcb h2{margin:2px 0;font-size:21px;line-height:1.25}.lb-lcb p{margin:0;color:#c9d2e6;font-size:15px;line-height:1.5}
+.lb-yrs{color:#d9ccb0;font-size:14px;font-weight:600}
+.lb-prof{display:grid;gap:34px;padding:40px 0}
+@media(min-width:860px){.lb-prof{grid-template-columns:340px 1fr;gap:56px}}
+.lb-prof figure{margin:0}.lb-prof figcaption{margin-top:10px;font-size:13px;color:#8f9bb8}.lb-prof figcaption a{color:#9fb2da}
+.lb-prof .lb-pt{border-radius:20px;border:2px solid #c4b091}
+.lb-prof h1{font-size:clamp(30px,5vw,46px);margin:10px 0 6px}
+.lb-prof h2{font-size:22px;margin:28px 0 8px}
+.lb-prof p{line-height:1.75;color:#d8deee}
+.lb-key{margin:26px 0;padding:20px 24px;border-radius:16px;border-left:4px solid #c4b091;background:rgba(196,176,145,.08)}
+.lb-key strong{color:#ece3cf}.lb-key p{margin:8px 0 0}
+.lb-back{display:inline-block;margin-top:20px;color:#d9ccb0;text-decoration:none;font-weight:700}
+.lb-note2{color:#8f9bb8;font-size:13px;margin-top:28px}
+</style>
+{% block head %}{% endblock %}
+</head>
+<body>
+{% set NAV = {'kk':{'home':'Басты бет','lib':'Кітапхана','ldr':'Көшбасшылар','tests':'Тесттер','apply':'Анкета'},
+              'ru':{'home':'На главную','lib':'Библиотека','ldr':'Лидеры','tests':'Тесты','apply':'Анкета'},
+              'en':{'home':'Home','lib':'Library','ldr':'Leaders','tests':'Tests','apply':'Apply'}}[lang] %}
+<nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang=lang) }}">Leader<b>X</b></a><div style="display:flex;align-items:center"><div class="links" id="menu"><a class="l" href="{{ url_for('index', lang=lang) }}">{{ NAV.home }}</a><a class="l" href="{{ url_for('library', lang=lang) }}">{{ NAV.lib }}</a><a class="l" href="{{ url_for('library_leaders', lang=lang) }}">{{ NAV.ldr }}</a><a class="l" href="{{ url_for('tests', lang=lang) }}">{{ NAV.tests }}</a></div><a class="btn" style="padding:9px 18px;font-size:14px;margin-left:16px" target="_blank" rel="noopener" href="{{ form_url }}">{{ NAV.apply }}</a><div class="lang" role="group" aria-label="Language">{% for l2, lab in (('kk','KZ'),('ru','RU'),('en','EN')) %}<a href="{{ url_for(request.endpoint, **dict(request.view_args, lang=l2)) }}" hreflang="{{ l2 }}"{% if lang == l2 %} class="on"{% endif %}>{{ lab }}</a>{% endfor %}</div><button type="button" class="burger" aria-label="Menu" aria-controls="menu" aria-expanded="false"><span></span></button></div></div></nav>
+<main class="lb">
+{% block main %}{% endblock %}
+</main>
+<footer><div class="wrap"><span>© 2026 LeaderX · leaderx.kz</span><a href="{{ url_for('index', lang=lang) }}" style="color:inherit">{{ NAV.home }}</a></div></footer>
+<script src="{{ url_for('static', filename='js/nav.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

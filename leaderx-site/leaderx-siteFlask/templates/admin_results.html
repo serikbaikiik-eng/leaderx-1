@@ -7,21 +7,22 @@
 <title>Нәтижелер — LeaderX Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', v=css_v) }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css', v=css_v) }}">
 <style>
 [hidden]{display:none !important}
 .lx-filter{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
 .lx-f{display:block;margin:0}
 .lx-f label{display:block;margin:0 0 6px;font-size:12px;font-weight:600;opacity:.85}
-.lx-f select,.lx-f input{display:block;box-sizing:border-box !important;height:42px !important;min-height:0 !important;max-height:42px !important;width:auto !important;min-width:160px;margin:0 !important;padding:0 12px !important;border-radius:10px;border:1px solid #25375f;background:#0a1428;color:#fff;font:inherit;font-size:15px;line-height:40px;aspect-ratio:auto !important}
-.lx-b{display:inline-block;box-sizing:border-box;height:42px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#e8cf8a,#c9a54b);color:#0a1428;font:inherit;font-size:14px;font-weight:700;line-height:42px;cursor:pointer;text-decoration:none}
-.lx-b.o{background:transparent;border:1px solid #c9a54b;color:inherit;line-height:40px}
+.lx-f select,.lx-f input{display:block;box-sizing:border-box !important;height:42px !important;min-height:0 !important;max-height:42px !important;width:auto !important;min-width:160px;margin:0 !important;padding:0 12px !important;border-radius:10px;border:1px solid #25407a;background:#0a1d40;color:#fff;font:inherit;font-size:15px;line-height:40px;aspect-ratio:auto !important}
+.lx-b{display:inline-block;box-sizing:border-box;height:42px;padding:0 18px;border:0;border-radius:10px;background:linear-gradient(135deg,#d9ccb0,#c4b091);color:#0a1d40;font:inherit;font-size:14px;font-weight:700;line-height:42px;cursor:pointer;text-decoration:none}
+.lx-b.o{background:transparent;border:1px solid #c4b091;color:inherit;line-height:40px}
 .lx-del{background:none;border:0;color:#ffb4bd;cursor:pointer;font:inherit;font-size:13px;padding:0}
 .lx-score{white-space:nowrap}
 </style>
 </head>
 <body>
 <nav><div class="wrap"><a class="logo" href="{{ url_for('index', lang='kk') }}">Leader<b>X</b> · Admin</a>
-<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
+<div style="display:flex;align-items:center"><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin') }}">Келушілер</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_team') }}">Команда</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('admin_library') }}">Кітапхана</a><a class="l" style="display:inline;margin-right:16px" href="{{ url_for('index', lang='kk') }}">← Сайт</a><form method="post" action="{{ url_for('admin_logout') }}" style="display:inline"><input type="hidden" name="csrf" value="{{ csrf_token() }}"><button type="submit" class="l" style="background:none;border:0;cursor:pointer;font:inherit;color:inherit;padding:0">Шығу</button></form></div></div></nav>
 <header class="sub"><div class="wrap"><h1>Тест нәтижелері</h1><p>Тест тапсырғандардың аты-жөні, тобы және нәтижесі. Уақыт: UTC+{{ tz }}. Бұл жеке деректер: басқаларға таратпаңыз.</p></div></header>
 <main><div class="wrap kpi-page">
 
